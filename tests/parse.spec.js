@@ -269,6 +269,33 @@ describe('Single comment string parsing', function() {
         });
   });
 
+  it('should parse `[n="u as desc', function() {
+      expect(parsed(function(){
+        /**
+         * @param {Number} `[n="u desc
+         */
+      })[0].tags[0].description)
+        .to.eq('`[n="u desc');
+  });
+
+  it('should parse `[n="u] as desc', function() {
+      expect(parsed(function(){
+        /**
+         * @param {Number} `[n="u] desc
+         */
+      })[0].tags[0].description)
+        .to.eq('`[n="u] desc');
+  });
+
+  it('should parse [n="u] as optional var', function() {
+      expect(parsed(function(){
+        /**
+         * @param {Number} [n="u] desc
+         */
+      })[0].tags[0].var)
+        .to.eq('[n="u]');
+  });
+
   it('should parse multiple tags', function() {
       expect(parsed(function(){
         /**
